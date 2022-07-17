@@ -1,5 +1,5 @@
 import Prism from 'prismjs';
-import marked from 'marked';
+import {marked} from 'marked';
 // LanguageHightlightModules
 import 'prismjs/components/prism-jsx.min.js';
 import 'prismjs/components/prism-typescript.min.js';

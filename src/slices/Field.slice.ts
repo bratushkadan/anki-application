@@ -37,7 +37,7 @@ const fieldSlice = createSlice({
     removeField: (state, action) => state.filter(field => field.id !== action.payload),
     wipeFields: (state, action) => action.payload
   }
-});
+}) as any;
 
 const {
   addField: addFieldAction,
@@ -48,7 +48,7 @@ export const {removeField, moveFieldUp, moveFieldDown} = fieldSlice.actions;
 export default fieldSlice.reducer;
 
 /* addField-thunk consuming highlightSyntax Promise API */
-export function addField({type, language = null, side}) {
+export function addField({type, language = null, side}): any {
   return function (dispatch) {
     if (type === 'comment') language = 'comment';
     let highlightedMarkup = highlightSyntax[language]('');
@@ -57,7 +57,7 @@ export function addField({type, language = null, side}) {
 }
 
 /* modifyField-thunk consuming highlightSyntax Promise API */
-export function modifyField({id, value}) {
+export function modifyField({id, value}): any {
   return function (dispatch, getState) {
     let fieldLanguage = getState().inputFields.find(field => field.id === id).language;
     let highlightedMarkup = highlightSyntax[fieldLanguage](value);
@@ -66,7 +66,7 @@ export function modifyField({id, value}) {
 }
 
 /* wipeFields-thunk consuming highlightSyntax Promise API */
-export function wipeFields() {
+export function wipeFields(): any {
   return function (dispatch) {
     let commentField = {type: 'comment', language: 'comment', value: '', side: 'front', highlightedMarkup: highlightSyntax['comment'](''), id: nanoid()};
     return dispatch(wipeFieldsAction([commentField]));
