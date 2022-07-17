@@ -29,7 +29,7 @@ const FormRow = styled.div`
   display: flex;
 `
 
-const ContentEditable = styled.div`
+const ContentEditable = styled.pre`
   flex-grow: 2;
 
   min-height: 1rem;
