@@ -19,9 +19,19 @@ const StyledForm = styled(Form)`
       cursor: pointer;
     }
   }
+
+  :nth-child(n+2) {
+    margin-top: .5rem;
+  }
+`
+
+const FormRow = styled.div`
+  display: flex;
 `
 
 const ContentEditable = styled.div`
+  flex-grow: 2;
+
   min-height: 1rem;
   word-wrap: break-word;
   transition: background-color .2s ease;
@@ -71,10 +81,15 @@ function Form({
     }
   }, []); */
 
-  function handleTextarea(e: React.FormEvent<HTMLInputElement>) {
-    dispatch(modifyField({value: e.currentTarget.innerText, id}))
+
+  const changeTextArea = useCallback((content: string) => {
+    dispatch(modifyField({value: content, id}))
+  }, [id])
+
+  const handleTextArea = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+    changeTextArea(e.currentTarget.innerText)
     e.preventDefault();
-  }
+  }, [id])
 
   const hint = type === 'comment' ? `Comment` : `Code (${getLanguageAlias(language)})`;
 
@@ -95,27 +110,44 @@ function Form({
       className={className}
       data-side={side}
     >
-      <div className={`${className}__caption`}>
-        <span className="controlsContainer">
-          <span title="Move block upward">
-            <ArrowUpwardIcon onClick={handleMoveFieldUp} />
+      <FormRow>
+        <ContentEditable
+          contentEditable
+          onInput={handleTextArea}
+          data-contenteditable-section-label={hint}
+/*           onKeyDown={((e: any) => {
+            if (e.code === "KeyC" && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+              console.log("Pressed C")
+              e.preventDefault()
+
+              const selection = window.getSelection()
+              if (!selection) {
+                return
+              }
+
+              changeTextArea(e.currentTarget.innerText)
+              console.log(selection.focusOffset)
+              console.log(selection.anchorOffset)
+            }
+          })} */
+
+          // onFocus={() => console.log('focused')}
+          // onBlur={() => console.log('blurred')}
+        />
+        <div className={`${className}__caption`}>
+          <span className="controlsContainer">
+            <span title="Move block upward">
+              <ArrowUpwardIcon onClick={handleMoveFieldUp} />
+            </span>
+            <span title="Move block downward">
+              <ArrowDownwardIcon onClick={hanldeMoveFieldDown} />
+            </span>
+            <span title="Remove block">
+              <DeleteIcon onClick={handleRemoveField} />
+            </span>
           </span>
-          <span title="Move block downward">
-            <ArrowDownwardIcon onClick={hanldeMoveFieldDown} />
-          </span>
-          <span title="Remove block">
-            <DeleteIcon onClick={handleRemoveField} />
-          </span>
-        </span>
-      </div>
-      <ContentEditable
-        contentEditable
-        onInput={handleTextarea}
-        data-contenteditable-section-label={hint}
-        // onFocus={() => console.log('focused')}
-        // onBlur={() => console.log('blurred')}
-        placeholder={hint}
-      />
+        </div>
+      </FormRow>
     </form>);
 };
 
