@@ -27,7 +27,7 @@ const StyleFormField = styled(FormField)`
 
 function FormField({className}: {className?: string}) {
   const inputFields = useSelector<any>(state => state.inputFields) as any[];
-  const currentCardSide = useSelector<any>(state => state.cardSide);
+  const currentCardSide = useSelector<string, string>((state: any) => state.cardSide);
   const dispatch = useDispatch();
 
   const formFieldRef = useRef(null);
@@ -41,7 +41,7 @@ function FormField({className}: {className?: string}) {
     return inputFields
       .filter(field => field.side === currentCardSide)
       .map(field => <Form key={field.id} {...field}/>)
-  }, [inputFields])
+  }, [inputFields, currentCardSide])
 
   return <div ref={formFieldRef} className={className} style={{height: `calc(100vh - ${fieldOffset})`}}>
     {processInputFields()}

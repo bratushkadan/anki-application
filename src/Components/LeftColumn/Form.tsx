@@ -9,61 +9,32 @@ import { languageSelectOptions } from '../../common/languageSelectOptions';
 import {modifyField, moveFieldDown, moveFieldUp, removeField} from "../../slices/Field.slice";
 
 const StyledForm = styled(Form)`
-.form-leftColumn {
-  &-comment, &-code {
-    --border-color: hsl(var(--hue), 20%, 30%);
-    --background-color: hsl(var(--hue), 20%, 80%);
-    --placeholder-color: hsl(var(--hue), 20%, 20%);
-  }
-  &-comment[data-side="front"] {
-    --hue: 170;
-  }
-  &-code[data-side="front"] {
-    --hue: 110;
-  }
-
-  &-comment[data-side="back"] {
-    --hue: 110;
-  }
-  &-code[data-side="back"] {
-    --hue: 80;
-  }
-
-  &Textarea {
-    min-height: 10em;
-    overflow-y: hidden;
-    padding: .3em;
-    box-sizing: border-box;
-
-    margin-top: .5em;
-    width: 100%;
-    resize: none;
-    border: 1px solid var(--border-color);
-    box-sizing: border-box;
-    // background: var(--background-color);
-
-    &::placeholder {
-      color: var(--placeholder-color);
-    }
-  }
-
   &__caption {
     display: flex;
     justify-content: space-between;
-    //flex-flow: nowrap row-reverse;
+    align-items: flex-end;
+    flex-flow: nowrap row-reverse;
 
     .controlsContainer > * {
       cursor: pointer;
     }
   }
+`
 
-  .hint {
-    cursor: pointer;
-    &::selection {
-      background: transparent;
-    }
+const ContentEditable = styled.div`
+  min-height: 1rem;
+  word-wrap: break-word;
+  transition: background-color .2s ease;
+  outline: 0;
+
+  &:hover:not(:focus), &:empty:not(:focus) {
+    background-color: rgba(0, 0, 0, .07);
   }
-}`
+
+  &:empty:before {
+    content: attr(data-contenteditable-section-label);
+  }
+`;
 
 const getLanguageAlias = (language: keyof typeof languageSelectOptions) => languageSelectOptions[language]
 
@@ -75,17 +46,6 @@ interface Props {
   value: string
   className?: string
 }
-
-const ContentEditable = styled.div`
-  min-height: 1rem;
-  word-wrap: break-word;
-  transition: background-color .2s ease;
-  outline: 0;
-
-  &:hover:not(:focus) {
-    background-color: rgba(0, 0, 0, .07);
-  }
-`;
 
 function Form({
   id,
@@ -135,13 +95,7 @@ function Form({
       className={className}
       data-side={side}
     >
-      <div className="form-leftColumn__caption">
-        <span
-          className="hint"
-          ref={hintRef}
-        >
-          {hint}:
-        </span>
+      <div className={`${className}__caption`}>
         <span className="controlsContainer">
           <span title="Move block upward">
             <ArrowUpwardIcon onClick={handleMoveFieldUp} />
@@ -157,6 +111,7 @@ function Form({
       <ContentEditable
         contentEditable
         onInput={handleTextarea}
+        data-contenteditable-section-label={hint}
         // onFocus={() => console.log('focused')}
         // onBlur={() => console.log('blurred')}
         placeholder={hint}

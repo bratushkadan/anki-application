@@ -25,13 +25,13 @@ function AddSection({className}: {className?: string}) {
 
   const addComment = useCallback(() => {
     dispatch(addField({type: 'comment', side: cardSide}))
-  }, [])
+  }, [cardSide, language])
 
   const addSnippet = useCallback(() => {
     if (language !== '') {
       dispatch(addField({type: 'code', language, side: cardSide}));
     }
-  }, [])
+  }, [cardSide, language])
 
   return <div className={className}>
       <span title="Add comment">

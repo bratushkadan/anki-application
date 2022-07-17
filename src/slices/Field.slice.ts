@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {createSlice, nanoid} from '@reduxjs/toolkit';
 
 import * as highlightSyntax from '../modules/anki/highlight';
