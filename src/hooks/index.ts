@@ -1,6 +1,6 @@
 import {useState, useEffect, useLayoutEffect} from "react";
 
-function useTopWindowOffset(initialState, ref) {
+function useTopWindowOffset(initialState: any, ref: any) {
   const [offset, setOffset] = useState(initialState);
 
   useLayoutEffect(() => {
@@ -10,17 +10,17 @@ function useTopWindowOffset(initialState, ref) {
   return offset;
 }
 
-function useShortcut(callback, shortcutKeys, deps) {
+function useShortcut(callback: any, shortcutKeys: any, deps: any) {
   let keysSet = new Set();
 
-  let timeout = null;
+  let timeout: NodeJS.Timeout;
 
-  function handler(e) {
+  function handler(e: any) {
     clearTimeout(timeout);
 
     keysSet.add(e.code.toLowerCase().replace('left', '').replace('key', ''));
-    shortcutKeys = shortcutKeys.map(key => key.toLowerCase());
-    let cond = shortcutKeys.every(key => keysSet.has(key));
+    shortcutKeys = shortcutKeys.map((key: string) => key.toLowerCase());
+    let cond = shortcutKeys.every((key: string) => keysSet.has(key));
     if (cond) {
       callback();
       keysSet.clear();

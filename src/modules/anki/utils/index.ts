@@ -1,7 +1,7 @@
 import Prism from 'prismjs';
 import 'prismjs/components/prism-regex.min.js';
 
-export function processRegex(code) {
+export function processRegex(code: string) {
   let r = /<span class="token regex-source language-regex">(.+?)?<\/span>/gm;
   let m = code.match(r);
   if (code.match(r)) {

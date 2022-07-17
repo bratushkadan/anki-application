@@ -1,15 +1,24 @@
-import { useEffect, useLayoutEffect, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Select, MenuItem } from '@mui/material';
-import { languageSelectOptions } from '../../../common/languageSelectOptions.ts';
+import { languageSelectOptions } from '../../../common/languageSelectOptions';
 import { pickLanguage } from "../../../slices/Language.slice";
 
 export default function LanguagePicker() {
-  const language = useSelector(state => state.language);
+  const language = useSelector((state: any) => state.language);
   const dispatch = useDispatch();
 
   const mapSelectOptions = useCallback(() => {
-    return Object.keys(languageSelectOptions).map(key => <MenuItem value={key} key={key}>{languageSelectOptions[key]}</MenuItem>)
+    return Object.keys(languageSelectOptions).map(key => {
+      return (
+        <MenuItem
+          value={key}
+          key={key}
+        >
+          {languageSelectOptions[key as keyof typeof languageSelectOptions]}
+        </MenuItem>
+      )
+    })
   }, []);
 
   /* preload prism modules to prevent freeze for the first time */
@@ -22,7 +31,7 @@ export default function LanguagePicker() {
     if (pl) dispatch(pickLanguage(pl));
   }, [])
 
-  function handleLanguagePick(e) {
+  function handleLanguagePick(e: any) {
     dispatch(pickLanguage(e.target.value))
     window.localStorage.setItem('language', e.target.value);
   }
