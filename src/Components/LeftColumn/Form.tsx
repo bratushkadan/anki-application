@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, memo} from 'react';
+import React, {useCallback, memo} from 'react';
 import styled from 'styled-components'
 import {useDispatch} from "react-redux";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -29,11 +29,15 @@ const FormRow = styled.div`
   display: flex;
 `
 
+// white-space: pre-wrap;       /* Since CSS 2.1 */
+// white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+// white-space: -pre-wrap;      /* Opera 4-6 */
+// white-space: -o-pre-wrap;    /* Opera 7 */
+
 const ContentEditable = styled.pre`
   flex-grow: 2;
 
   min-height: 1rem;
-  word-wrap: break-word;
   transition: background-color .2s ease;
   outline: 0;
 
@@ -65,7 +69,6 @@ function Form({
   className
 }: Props): React.ReactElement<any, any>  {
   const dispatch = useDispatch();
-  const hintRef = useRef<HTMLSpanElement>(null);
 
 /*   const dndHandler = React.useCallback((e: MouseEvent) => {
     console.log(e.clientX, e.clientY);
